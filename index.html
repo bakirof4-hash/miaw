@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Asilzoda uchun samimiy uzr 🤍</title>
+    <meta name="description" content="Asilzoda uchun samimiy va iliq do‘stona uzr so‘rash sahifasi. Do‘stligimiz men uchun qadrli.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%22><text y=%2226%22 font-size=%2226%22>🤍</text></svg>">
+</head>
+<body>
+    <!-- Ambient Animated Blobs & Canvas Particles -->
+    <div class="ambient-background" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <canvas id="particleCanvas"></canvas>
+    </div>
+
+    <!-- Top Sound Controls -->
+    <header class="top-controls">
+        <button id="btnMusic" class="control-btn" title="Iliq fon musiqasi (yoqish/o‘chirish)" aria-label="Fon musiqasi">
+            <span id="musicIcon">🔇</span>
+            <span id="musicLabel">Musiqa</span>
+            <div id="musicWaves" class="music-waves" style="display: none;">
+                <span></span><span></span><span></span>
+            </div>
+        </button>
+    </header>
+
+    <!-- Main Card Container -->
+    <main class="main-wrapper">
+        <article class="apology-card">
+            <!-- Card Badge -->
+            <div class="card-badge">
+                <span class="pulsing-dot"></span>
+                <span>Chin dildan, samimiy</span>
+            </div>
+
+            <!-- Header -->
+            <h1 class="card-title">
+                Asilzoda <span class="heart-icon">❤️</span>
+            </h1>
+
+            <p class="subtitle">Mendan xafa bo‘lganingni bilaman...</p>
+
+            <!-- Sincere Message Box -->
+            <section class="letter-box">
+                <p class="sincere-message">
+                    Agar seni xafa qilgan bo‘lsam, chin dildan kechir. Men seni xafa qilishni hech qachon xohlamaganman. Do‘stligimiz men uchun juda qadrli. Balki hammasini bir zumda tuzatib bo‘lmas, lekin hech bo‘lmasa yana bir marta gaplashib olishimizni xohlayman. <span class="white-heart">🤍</span>
+                </p>
+            </section>
+
+            <!-- Question -->
+            <h2 class="question-text">Meni kechira olasanmi?</h2>
+
+            <!-- Decision Buttons Arena -->
+            <div class="buttons-arena">
+                <!-- HA Button -->
+                <button id="btnHa" class="action-btn btn-ha" aria-label="Kechirdim, ha">
+                    <span>🩷 HA</span>
+                    <span class="btn-shine"></span>
+                </button>
+
+                <!-- YO'Q Button (Escapes playfully) -->
+                <div class="btn-no-container">
+                    <button id="btnNo" class="action-btn btn-no" aria-label="Kechirmayman, yo'q">
+                        <span>🤭 YO‘Q</span>
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- Discreet Admin Link in Footer -->
+        <footer class="page-footer">
+            <p>Do‘stlik eng bebaho tuhfa ✨</p>
+            <a href="admin.html" class="admin-discreet-link" title="Boshqaruv paneli">
+                <span>🔐</span> Boshqaruv paneli
+            </a>
+        </footer>
+    </main>
+
+    <!-- Funny Escape Speech Bubble -->
+    <div id="escapeBubble" class="escape-bubble" role="tooltip">Yo‘q deyishga shoshma 😭</div>
+
+    <!-- Success Modal (After clicking HA) -->
+    <div id="successModalOverlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+        <div class="success-modal">
+            <div class="success-badge-icon">🥹</div>
+            <h2 id="successTitle" class="success-title">RAHMAT, ASILZODA! ❤️</h2>
+            
+            <p class="success-text">
+                Demak, yana gaplashamiz! Men bundan juda xursandman. Do‘stligimizni qadrlayman va seni boshqa xafa qilmaslikka harakat qilaman. 🤝❤️
+            </p>
+
+            <!-- Extra Fun Visual Feature -->
+            <div class="unblock-badge">
+                <div class="badge-title">
+                    <span>🔓</span> Do‘stlik qayta ochildi!
+                </div>
+                <div class="badge-subtitle">
+                    Asilzoda seni blockdan ochdi 😂❤️
+                </div>
+            </div>
+
+            <!-- Large Talk Button -->
+            <button id="btnTalkTrigger" class="btn-chat-trigger">
+                <span>💬 Endi gaplashamiz</span>
+            </button>
+
+            <!-- Friendly Message Input Section -->
+            <div id="listenSection" class="listen-section">
+                <p class="listen-prompt">
+                    Men seni tinglashga tayyorman. Nima xafa qilgan bo‘lsa, bemalol ayt. 🤍
+                </p>
+                <div class="quick-send-box">
+                    <input type="text" id="quickReplyInput" placeholder="Fikringni yoki dilingdagini yoz..." aria-label="Xabar matni">
+                    <button id="btnQuickReply" aria-label="Yuborish">Yuborish 📤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button (FAB) -->
+    <button id="fabChat" class="fab-chat" aria-label="Menga yoz">
+        <span>💬</span>
+        <span>Menga yoz</span>
+        <span id="fabBadge" class="fab-badge" style="display: none;">!</span>
+    </button>
+
+    <!-- Private Chat Window -->
+    <section id="chatWindow" class="chat-window" aria-label="Xabarlar oynasi">
+        <header class="chat-header">
+            <div class="chat-user-info">
+                <div class="user-avatar">🌸</div>
+                <div class="user-meta">
+                    <h4>Asilzoda & Umidjon</h4>
+                    <p>Onlayn</p>
+                </div>
+            </div>
+            <button id="chatCloseBtn" class="chat-close-btn" title="Yopish" aria-label="Yopish">✕</button>
+        </header>
+
+        <div id="chatBody" class="chat-body" role="log" aria-live="polite">
+            <!-- Dynamic Messages Stream injected via JS -->
+        </div>
+
+        <footer class="chat-footer">
+            <input type="text" id="chatInput" placeholder="Xabaringizni yozing..." aria-label="Xabar yozish">
+            <button id="chatSendBtn" class="btn-send-msg" aria-label="Yuborish">
+                <span>Yuborish</span>
+                <span>📤</span>
+            </button>
+        </footer>
+    </section>
+
+    <!-- Core Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/confetti.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

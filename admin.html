@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Panel - Boshqaruv Markazi</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%22><text y=%2226%22 font-size=%2226%22>🔐</text></svg>">
+</head>
+<body>
+
+    <!-- ==========================================================================
+         1. Secure Admin Login Screen
+         ========================================================================== -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-card">
+            <div class="login-icon">🔐</div>
+            <h1 class="login-title">Admin Kirish</h1>
+            <p class="login-desc">Asilzoda xabarlari va javoblarini boshqarish</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="adminUser">Foydalanuvchi nomi</label>
+                    <input type="text" id="adminUser" placeholder="admin" required autocomplete="username">
+                </div>
+
+                <div class="input-group">
+                    <label for="adminPass">Maxfiy parol</label>
+                    <input type="password" id="adminPass" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn-login">Kirish 🚀</button>
+                <div id="loginError" class="login-error">Noto‘g‘ri login yoki parol!</div>
+            </form>
+
+            <div class="login-footer-hint">
+                <a href="index.html">← Asosiy saytga qaytish</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         2. Authenticated Admin Dashboard Application
+         ========================================================================== -->
+    <div id="adminApp" class="admin-app">
+        <!-- Top Sticky Header -->
+        <header class="admin-header">
+            <div class="header-container">
+                <div class="brand-badge">
+                    <div class="admin-avatar">👋</div>
+                    <div>
+                        <h1>Admin Dashboard</h1>
+                        <span>Do‘stlik boshqaruv tizimi</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <a href="index.html" class="btn-header-link" target="_blank" title="Saytni yangi oynada ochish">
+                        <span>👁️</span> Saytni ko‘rish
+                    </a>
+                    <button id="btnLogout" class="btn-logout" title="Tizimdan chiqish">
+                        Chiqish 🚪
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard View -->
+        <main class="dashboard-content">
+
+            <!-- Metrics & Statistics Grid -->
+            <section class="stats-grid" aria-label="Statistika">
+                <!-- Unread Messages Card -->
+                <div class="stat-card">
+                    <div class="stat-icon pink">📩</div>
+                    <div class="stat-info">
+                        <h3>Yangi xabarlar</h3>
+                        <div class="stat-value">
+                            <span id="statUnread">0</span>
+                            <span id="statUnreadBadge" class="pulse-badge" style="display: none;">0 ta yangi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Messages Card -->
+                <div class="stat-card">
+                    <div class="stat-icon purple">💬</div>
+                    <div class="stat-info">
+                        <h3>Jami yozishmalar</h3>
+                        <div class="stat-value" id="statTotalMessages">0</div>
+                    </div>
+                </div>
+
+                <!-- Friendship Status Card -->
+                <div class="stat-card">
+                    <div class="stat-icon green">❤️</div>
+                    <div class="stat-info">
+                        <h3>Kechirish holati</h3>
+                        <div class="stat-value" id="statFriendshipStatus" style="font-size: 1.25rem;">
+                            <span style="color: #f59e0b;">Kutilmoqda ⏳</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Escape Attempts Card -->
+                <div class="stat-card">
+                    <div class="stat-icon yellow">😂</div>
+                    <div class="stat-info">
+                        <h3>"YO‘Q" qochishlari</h3>
+                        <div class="stat-value" id="statEscapeAttempts">0 marta</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Tabs -->
+            <nav class="nav-tabs" aria-label="Bo‘limlar">
+                <button class="tab-btn active" data-tab="tabMessages">
+                    <span>💬</span>
+                    <span>Xabarlar & Chat</span>
+                    <span id="tabUnreadBadge" class="tab-badge" style="display: none;">0</span>
+                </button>
+                <button class="tab-btn" data-tab="tabResponses">
+                    <span>❤️</span>
+                    <span>Javoblar & Harakatlar</span>
+                </button>
+                <button class="tab-btn" data-tab="tabSettings">
+                    <span>⚙️</span>
+                    <span>Sozlamalar & SMS</span>
+                </button>
+            </nav>
+
+            <!-- TAB 1: Messages & Live Chat System -->
+            <section id="tabMessages" class="tab-content active">
+                <div class="chat-and-inbox-grid">
+
+                    <!-- Left: Incoming Messages Inbox -->
+                    <div class="inbox-panel">
+                        <div class="panel-header">
+                            <h2>
+                                <span>📩</span> Kelgan xabarlar ro‘yxati
+                            </h2>
+                            <button id="btnMarkAllRead" class="btn-secondary-sm" title="Barchasini o‘qilgan qilish">
+                                Barchasi o‘qildi ✓
+                            </button>
+                        </div>
+                        <div id="inboxList" class="inbox-list" role="feed">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Full Conversation Stream & Reply Box -->
+                    <div class="chat-conversation-panel">
+                        <div class="chat-header-bar">
+                            <div class="chat-partner-info">
+                                <div class="partner-avatar">🌸</div>
+                                <div class="partner-meta">
+                                    <h3>Asilzoda bilan yozishma</h3>
+                                    <p>Onlayn kanal faol</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation Message Stream -->
+                        <div id="conversationBody" class="conversation-body" role="log" aria-live="polite">
+                            <!-- Injected dynamically via JS -->
+                        </div>
+
+                        <!-- Quick Response Chips -->
+                        <div class="quick-chips" title="Tezkor javob namunalari">
+                            <button class="chip">Kechir meni, Asilzoda. Seni tushunishga harakat qilaman 🤍</button>
+                            <button class="chip">Hammasini ochiqchasiga gaplashib olamizmi? 🤝</button>
+                            <button class="chip">Kechirganing uchun katta rahmat! 🥹❤️</button>
+                            <button class="chip">Do‘stligimiz men uchun hamma narsadan muhim ✨</button>
+                        </div>
+
+                        <!-- Reply Input Box -->
+                        <div class="admin-reply-box">
+                            <input type="text" id="adminReplyInput" placeholder="Asilzodaga javob yozing..." aria-label="Javob yozish">
+                            <button id="btnSendAdmin" class="btn-send-admin" aria-label="Yuborish">
+                                Yuborish 📤
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- TAB 2: Responses & Activity Log -->
+            <section id="tabResponses" class="tab-content">
+                <div class="card-section">
+                    <h2>
+                        <span>📋</span> Asilzoda harakatlari va javoblar tarixi
+                    </h2>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+                        Saytda sodir bo‘lgan barcha voqealar (tugma bosilishi, qochishlar, xabarlar) xronologiyasi.
+                    </p>
+
+                    <div id="activityList" class="activity-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: Settings & SMS Architecture -->
+            <section id="tabSettings" class="tab-content">
+                <div class="settings-grid">
+
+                    <!-- Admin Password Change -->
+                    <div class="settings-box">
+                        <h3>
+                            <span>🔑</span> Parolni o‘zgartirish
+                        </h3>
+                        <form id="formChangePassword">
+                            <div class="form-field">
+                                <label for="oldPassword">Hozirgi parol</label>
+                                <input type="password" id="oldPassword" required placeholder="Hozirgi parol">
+                            </div>
+                            <div class="form-field">
+                                <label for="newPassword">Yangi parol</label>
+                                <input type="password" id="newPassword" required placeholder="Kamida 4 ta belgi">
+                            </div>
+                            <button type="submit" class="btn-primary-action">
+                                Saqlash 💾
+                            </button>
+                            <div id="passChangeError" class="login-error" style="margin-top: 10px;"></div>
+                            <div id="passChangeSuccess" style="color: #34d399; font-size: 0.85rem; margin-top: 10px; display: none;"></div>
+                        </form>
+                    </div>
+
+                    <!-- SMS Gateway Architecture Integration -->
+                    <div class="settings-box">
+                        <h3>
+                            <span>📱</span> SMS Xabarnoma Integratsiyasi
+                        </h3>
+                        <div class="info-banner">
+                            <strong>Eslatma:</strong> Brauzer mustaqil ravishda to‘g‘ridan-to‘g‘ri telefon raqamiga bepul SMS yubora olmaydi. Buning uchun SMS provayder Gateway API (Eskiz.uz, Twilio yoki PlayMobile) ulanadi. Quyidagi sozlamalar backend API webhook uchun to‘liq tayyorlangan.
+                        </div>
+
+                        <div class="form-field">
+                            <label for="selectSmsProvider">SMS Provayder</label>
+                            <select id="selectSmsProvider">
+                                <option value="eskiz">Eskiz.uz (O‘zbekiston)</option>
+                                <option value="playmobile">PlayMobile (O‘zbekiston)</option>
+                                <option value="twilio">Twilio SMS (Global)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="inputAdminPhone">Admin telefon raqami</label>
+                            <input type="text" id="inputAdminPhone" value="+998901234567" placeholder="+998901234567">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="inputSmsApiKey">API Kalit / Token</label>
+                            <input type="password" id="inputSmsApiKey" placeholder="Provayder API tokeni">
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button id="btnSaveSmsSettings" class="btn-secondary-action">
+                                Saqlash 💾
+                            </button>
+                            <button id="btnTestSms" class="btn-primary-action">
+                                Test SMS yuborish 📲
+                            </button>
+                        </div>
+
+                        <div id="smsPreviewOutput" class="sms-preview-output"></div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Live Toast Notification -->
+    <div id="adminToast" class="admin-toast" role="status" aria-live="polite">
+        <span style="font-size: 1.4rem;">🔔</span>
+        <span id="adminToastText" style="font-size: 0.92rem; font-weight: 600;">Yangi xabar!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
